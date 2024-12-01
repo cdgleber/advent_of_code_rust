@@ -1,0 +1,3 @@
+# Advent of Code
+
+These are my solutions to AoC in Rust. No guarentees they will work for anyone else...
