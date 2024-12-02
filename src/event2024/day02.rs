@@ -8,30 +8,82 @@ pub fn run_day02(input: &str) {
         })
         .collect();
 
-    println!("{:?}", reports);
+    // println!("{:?}", reports);
 
-    let safe_reports = reports
+    let part_one_safe_reports = reports
         .iter()
         .map(|report| {
-            println!("{:?}", report);
-
-            let mut slices = report.windows(2).map(|s| {
-                let diff = s[0].abs_diff(s[1]);
-                let incr = s[0] <= s[1];
-                println!("{:?}, {}, {}", s, diff, incr);
-
-                (diff < 3, incr)
-            });
-
-            let safe = slices.all(|b| ); //look for all true, safe and increasing
-
-            if safe {
-                return safe;
-            } else {
-                return slices.all(|b| b == false); //look for all false, safe and decreasing
-            }
+            // println!("{:?}", report);
+            part_one_safe(report)
         })
         .collect::<Vec<_>>();
 
-    println!("{:?}", safe_reports);
+    let answer: usize = part_one_safe_reports
+        .iter()
+        .map(|r| if *r { 1 } else { 0 })
+        .sum();
+
+    println!("day 02 part 1: {}", answer);
+
+    let part_two_safe_reports = reports
+        .iter()
+        .map(|report| {
+            // println!("{:?}", report);
+            part_two_safe(report)
+        })
+        .collect::<Vec<_>>();
+
+    let answer: usize = part_two_safe_reports
+        .iter()
+        .map(|r| if *r { 1 } else { 0 })
+        .sum();
+
+    println!("day 02 part 2: {}", answer);
+}
+
+fn iter_all_same<T: PartialEq>(arr: &[T]) -> bool {
+    arr.windows(2).all(|w| w[0] == w[1])
+}
+
+fn part_one_safe(report: &Vec<usize>) -> bool {
+    let slices: Vec<(bool, bool, bool)> = report
+        .windows(2)
+        .map(|s| {
+            let diff: isize = (s[0] as isize) - (s[1] as isize);
+            (diff <= 3 && diff >= -3, diff >= 0, diff <= 0)
+        })
+        .collect();
+
+    if slices.iter().all(|s| s.0) {
+        //all differences must be -3 to 3 then look for all incr or decr
+        iter_all_same(&slices)
+    } else {
+        false
+    }
+}
+
+fn part_two_safe(report: &Vec<usize>) -> bool {
+    let length = report.len();
+    let mut safe = part_one_safe(report);
+
+    if !safe {
+        for skip_index in 0..length {
+            let mut temp_vec = Vec::new();
+            for i in 0..length {
+                if skip_index != i {
+                    temp_vec.push(report[i]);
+                }
+            }
+
+            let p1 = part_one_safe(&temp_vec);
+
+            // println!("{:?}, {}", temp_vec, p1);
+
+            if p1 {
+                safe = true;
+            }
+        }
+    }
+
+    safe
 }
