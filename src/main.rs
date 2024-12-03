@@ -11,7 +11,8 @@ fn main() {
     // run_day02(&day_02_notes);
 
     let day_03_notes = include_str!("../input/aoc_2024_d3.txt");
-    run_day03(&TESTD3);
+    run_day03(&day_03_notes);
 }
 
 const TESTD3: &str = "xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))";
+const TESTD3p2: &str = "xmul(2,4)&mul[3,7]!^don't()_mul(5,5)+mul(32,64](mul(11,8)undo()?mul(8,5))";

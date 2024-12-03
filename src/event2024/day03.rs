@@ -10,6 +10,10 @@ pub fn parse(input: &str) -> (u32, u32) {
     let mut part_one = 0;
     let mut part_two = 0;
 
+    let mul_needle = ['m', 'u', 'l', '('];
+    let do_needle = ['d', 'o', '(', ')'];
+    let dont_needle = ['d', 'o', 'n', '\'', 't', '(', ')'];
+
     while index < memory.len() {
         // look for the starts that we care about 'm'ul and 'd'o
         if memory[index] != 'm' && memory[index] != 'd' {
@@ -18,13 +22,13 @@ pub fn parse(input: &str) -> (u32, u32) {
         }
 
         // Check possible prefixes
-        if memory[index..].starts_with(&['m', 'u', 'l', '(']) {
+        if memory[index..].starts_with(&mul_needle) {
             index += 4;
-        } else if memory[index..].starts_with(&['d', 'o', '(', ')']) {
+        } else if memory[index..].starts_with(&do_needle) {
             index += 4;
             enabled = true;
             continue;
-        } else if memory[index..].starts_with(&['d', 'o', 'n', '\'', 't', '(', ')']) {
+        } else if memory[index..].starts_with(&dont_needle) {
             index += 7;
             enabled = false;
             continue;
@@ -65,7 +69,7 @@ pub fn parse(input: &str) -> (u32, u32) {
 
         // Multiply
         let product = first * second;
-        println!("{} {} {}, {enabled}", first, second, product);
+        // println!("{} {} {}, {enabled}", first, second, product);
         part_one += product;
         if enabled {
             part_two += product;
