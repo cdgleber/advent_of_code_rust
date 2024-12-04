@@ -1,7 +1,7 @@
 use crate::util::point::*;
 use std::ops::{Index, IndexMut};
 
-#[derive(Clone, PartialEq, Eq, Hash)]
+#[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Grid<T> {
     pub width: i32,
     pub height: i32,
@@ -15,7 +15,11 @@ impl Grid<u8> {
         let height = raw.len() as i32;
         let mut bytes = Vec::with_capacity((width * height) as usize);
         raw.iter().for_each(|slice| bytes.extend_from_slice(slice));
-        Grid { width, height, bytes }
+        Grid {
+            width,
+            height,
+            bytes,
+        }
     }
 }
 
@@ -28,11 +32,22 @@ impl<T: Copy + PartialEq> Grid<T> {
         };
         self.bytes.iter().position(|&h| h == needle).map(to_point)
     }
+
+    pub fn to_point(&self, index: usize) -> Point {
+        //TODO add check for within bounds
+        let x = (index as i32) % self.width;
+        let y = (index as i32) / self.width;
+        Point::new(x, y)
+    }
 }
 
 impl<T: Copy> Grid<T> {
     pub fn new(width: i32, height: i32, value: T) -> Grid<T> {
-        Grid { width, height, bytes: vec![value; (width * height) as usize] }
+        Grid {
+            width,
+            height,
+            bytes: vec![value; (width * height) as usize],
+        }
     }
 }
 
