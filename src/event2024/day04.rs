@@ -27,22 +27,11 @@ pub fn run_day04_p1(input: &str) {
 
                 let haystack = [first, second, third];
 
-                // println!("{:?}, {:?}", haystack, needle);
-
                 if haystack == needle {
                     number_of_xmas += 1;
                 }
             }
         }
-
-        // if grid.bytes[spot] == b'S' {
-        //     let start = grid.to_point(spot);
-        //     println!("{:?}", start);
-        //     if depth_first_search(start, false, &grid) {
-        //         // println!("FOUND");
-        //         number_of_xmas += 1;
-        //     }
-        // }
     }
 
     println!("{}", number_of_xmas);
@@ -77,15 +66,6 @@ pub fn run_day04_p2(input: &str) {
                 }
             }
         }
-
-        // if grid.bytes[spot] == b'S' {
-        //     let start = grid.to_point(spot);
-        //     println!("{:?}", start);
-        //     if depth_first_search(start, false, &grid) {
-        //         // println!("FOUND");
-        //         number_of_xmas += 1;
-        //     }
-        // }
     }
 
     println!("{}", number_of_xmas);
@@ -99,7 +79,8 @@ OOMMMOO
 OAOAOAO
 SOOSOOS";
 
-pub const TESTD4: &str = "MMMSXXMASM
+pub const TESTD4: &str =
+    "MMMSXXMASM
 MSAMXMSMSA
 AMXSXMAAMM
 MSAMASMSMX
