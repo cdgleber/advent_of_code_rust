@@ -1,5 +1,5 @@
 use advent_of_code_rust::event2024::*;
-use day05::{run_day05_p1, TESTD5};
+use day05::{ run_day05_p1, run_day05_p2, TESTD5 };
 // use day01::run_day01;
 // use day02::run_day02;
 // use day03::run_day03;
@@ -19,5 +19,5 @@ fn main() {
     // run_day04_p2(&day_04_notes);
 
     let day_05_notes = include_str!("../input/aoc_2024_d5.txt");
-    run_day05(TESTD5);
+    run_day05_p2(&day_05_notes);
 }

@@ -1,4 +1,4 @@
-use std::collections::{HashMap, HashSet};
+use std::collections::{ HashMap, HashSet };
 
 pub fn run_day05_p1(input: &str) {
     let (page_ordering_rules_str, pages_str) = input.split_once("\n\n").unwrap();
@@ -18,7 +18,12 @@ pub fn run_day05_p1(input: &str) {
 
     let updates: Vec<Vec<u8>> = pages_str
         .lines()
-        .map(|l| l.split(',').map(|i| i.parse::<u8>().unwrap()).collect())
+        .map(|l|
+            l
+                .split(',')
+                .map(|i| i.parse::<u8>().unwrap())
+                .collect()
+        )
         .collect();
 
     let mut answer = 0u32;
@@ -28,9 +33,7 @@ pub fn run_day05_p1(input: &str) {
             let eval_page = page[i];
             let pages_before = &page[..i];
             if let Some(spec_page_order_rules) = page_ordering_rules.get(&eval_page) {
-                correct_order = pages_before
-                    .iter()
-                    .all(|p| !spec_page_order_rules.contains(p));
+                correct_order = pages_before.iter().all(|p| !spec_page_order_rules.contains(p));
             }
 
             if !correct_order {
@@ -48,7 +51,7 @@ pub fn run_day05_p1(input: &str) {
 }
 
 pub fn run_day05_p2(input: &str) {
-    let (page_ordering_rules_str, pages_str) = input.split_once("\n\n").unwrap();
+    let (page_ordering_rules_str, pages_str) = input.split_once("\r\n\r\n").unwrap(); // f you windows
 
     let mut page_ordering_rules: HashMap<u8, HashSet<u8>> = HashMap::new();
     page_ordering_rules_str.lines().for_each(|l| {
@@ -63,29 +66,25 @@ pub fn run_day05_p2(input: &str) {
             .or_insert(HashSet::<u8>::from([value]));
     });
 
-    let mut updates: Vec<Vec<u8>> = pages_str
+    let updates: Vec<Vec<u8>> = pages_str
         .lines()
-        .map(|l| l.split(',').map(|i| i.parse::<u8>().unwrap()).collect())
+        .map(|l|
+            l
+                .split(',')
+                .map(|i| i.parse::<u8>().unwrap())
+                .collect()
+        )
         .collect();
 
     let mut answer = 0u32;
-    for page in &mut updates {
-        let mut correct_order = false;
-        for i in 0..page.len() {
-            let eval_page = &page[i];
-            let pages_before = &page[..i];
-            if let Some(spec_page_order_rules) = page_ordering_rules.get(&eval_page) {
-                pages_before.iter().enumerate().for_each(|(j, p)| {
-                    if spec_page_order_rules.contains(p) {
-                        page.swap(i, j);
-                    }
-                });
-            }
-        }
+    for page_index in 0..updates.len() {
+        let page = updates[page_index].clone();
 
-        if !correct_order {
-            let middle_i = page.len() / 2;
-            answer += page[middle_i] as u32;
+        if !check_page(&updates[page_index], &page_ordering_rules) {
+            //if false execute custom bubble sort
+            let new_page = custom_sort(page, &page_ordering_rules);
+            let middle_i = new_page.len() / 2;
+            answer += new_page[middle_i] as u32;
         }
     }
 
@@ -98,9 +97,7 @@ fn check_page(page: &Vec<u8>, page_ordering_rules: &HashMap<u8, HashSet<u8>>) ->
         let eval_page = page[i];
         let pages_before = &page[..i];
         if let Some(spec_page_order_rules) = page_ordering_rules.get(&eval_page) {
-            correct_order = pages_before
-                .iter()
-                .all(|p| !spec_page_order_rules.contains(p));
+            correct_order = pages_before.iter().all(|p| !spec_page_order_rules.contains(p));
         }
 
         if !correct_order {
@@ -110,7 +107,33 @@ fn check_page(page: &Vec<u8>, page_ordering_rules: &HashMap<u8, HashSet<u8>>) ->
     correct_order
 }
 
-pub const TESTD5: &str = "47|53
+fn custom_sort(mut page: Vec<u8>, page_ordering_rules: &HashMap<u8, HashSet<u8>>) -> Vec<u8> {
+    let mut correct_order = false;
+
+    for page_index in 0..page.len() {
+        let temp = page.clone();
+        let eval_page = temp[page_index];
+        let pages_before = &temp[..page_index];
+        if let Some(spec_page_order_rules) = page_ordering_rules.get(&eval_page) {
+            for page_before_index in 0..pages_before.len() {
+                if spec_page_order_rules.contains(&pages_before[page_before_index]) {
+                    page.swap(page_before_index, page_index);
+                    continue;
+                }
+                correct_order = true;
+            }
+        }
+    }
+
+    if correct_order {
+        page
+    } else {
+        custom_sort(page, page_ordering_rules)
+    }
+}
+
+pub const TESTD5: &str =
+    "47|53
 97|13
 97|61
 97|47
