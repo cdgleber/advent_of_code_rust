@@ -51,7 +51,7 @@ pub fn run_day05_p1(input: &str) {
 }
 
 pub fn run_day05_p2(input: &str) {
-    let (page_ordering_rules_str, pages_str) = input.split_once("\r\n\r\n").unwrap(); // f you windows
+    let (page_ordering_rules_str, pages_str) = input.split_once("\r\n\r\n").unwrap(); // f you windows \r\n\r\n for windows \n\n for unix
 
     let mut page_ordering_rules: HashMap<u8, HashSet<u8>> = HashMap::new();
     page_ordering_rules_str.lines().for_each(|l| {
