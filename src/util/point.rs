@@ -6,17 +6,14 @@ pub const UP: Point = Point::new(0, -1);
 pub const DOWN: Point = Point::new(0, 1);
 pub const LEFT: Point = Point::new(-1, 0);
 pub const RIGHT: Point = Point::new(1, 0);
+pub const UPRIGHT: Point = Point::new(1, -1);
+pub const DOWNRIGHT: Point = Point::new(1, 1);
+pub const DOWNLEFT: Point = Point::new(-1, 1);
+pub const UPLEFT: Point = Point::new(-1, -1);
+
 pub const ORTHOGONAL: [Point; 4] = [UP, DOWN, LEFT, RIGHT];
-pub const DIAGONAL: [Point; 8] = [
-    Point::new(-1, -1),
-    UP,
-    Point::new(1, -1),
-    LEFT,
-    RIGHT,
-    Point::new(-1, 1),
-    DOWN,
-    Point::new(1, 1),
-];
+pub const DIAGONAL: [Point; 8] = [UPLEFT, UP, UPRIGHT, LEFT, RIGHT, DOWNLEFT, DOWN, DOWNRIGHT];
+pub const XGONAL: [Point; 4] = [UPRIGHT, DOWNRIGHT, DOWNLEFT, UPLEFT];
 
 #[derive(Copy, Clone, Debug, Eq, PartialEq)]
 pub struct Point {

@@ -3,7 +3,7 @@ use std::ops::Index;
 use crate::util::grid::*;
 use crate::util::point::*;
 
-pub fn run_day04(input: &str) {
+pub fn run_day04_p1(input: &str) {
     let grid = Grid::parse(input);
     let mut number_of_xmas = 0;
     let needle = [Some(&b'M'), Some(&b'A'), Some(&b'S')];
@@ -48,31 +48,48 @@ pub fn run_day04(input: &str) {
     println!("{}", number_of_xmas);
 }
 
-// fn depth_first_search(start: Point, forward: bool, grid: &Grid<u8>) -> i32 {
-//     //search XMAS forward
-//     let to_find = if forward {
-//         [b'M', b'A', b'S']
-//     } else {
-//         [b'A', b'M', b'X']
-//     };
+pub fn run_day04_p2(input: &str) {
+    let grid = Grid::parse(input);
+    let mut number_of_xmas = 0;
+    let mmss = [Some(&b'M'), Some(&b'M'), Some(&b'S'), Some(&b'S')];
+    let smms = [Some(&b'S'), Some(&b'M'), Some(&b'M'), Some(&b'S')];
+    let ssmm = [Some(&b'S'), Some(&b'S'), Some(&b'M'), Some(&b'M')];
+    let mssm = [Some(&b'M'), Some(&b'S'), Some(&b'S'), Some(&b'M')];
+    let all_matches = vec![mmss, smms, ssmm, mssm];
 
-//     let mut found = 0;
-//     for movement in DIAGONAL {
-//         let mut found: bool = false;
+    for spot in 0..grid.bytes.len() {
+        if grid.bytes[spot] == b'A' {
+            let start = grid.to_point(spot).unwrap();
 
-//         let index_movement = grid.width * movement.y + movement.x;
+            let mut temp = Vec::new();
+            for movement in XGONAL {
+                let to_add = match grid.contains(start + movement) {
+                    true => Some(grid.index(start + movement)),
+                    false => None,
+                };
+                temp.push(to_add);
+            }
 
-//
-//         let next_letters = [];
+            for compare in &all_matches {
+                if temp.as_slice() == compare {
+                    number_of_xmas += 1;
+                    break;
+                }
+            }
+        }
 
-//         if found {
-//             println!("{:?}, {:?}", start, movement);
-//             found += 1;
-//         }
-//     }
+        // if grid.bytes[spot] == b'S' {
+        //     let start = grid.to_point(spot);
+        //     println!("{:?}", start);
+        //     if depth_first_search(start, false, &grid) {
+        //         // println!("FOUND");
+        //         number_of_xmas += 1;
+        //     }
+        // }
+    }
 
-//     found
-// }
+    println!("{}", number_of_xmas);
+}
 
 pub const TESTD4E: &str = "SOOSOOS
 OAOAOAO
