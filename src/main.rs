@@ -15,5 +15,5 @@ fn main() {
     // run_day03(&day_03_notes);
 
     let day_04_notes = include_str!("../input/aoc_2024_d4.txt");
-    run_day04(advent_of_code_rust::event2024::day04::TESTD4E);
+    run_day04(&day_04_notes);
 }

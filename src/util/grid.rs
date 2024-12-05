@@ -33,11 +33,14 @@ impl<T: Copy + PartialEq> Grid<T> {
         self.bytes.iter().position(|&h| h == needle).map(to_point)
     }
 
-    pub fn to_point(&self, index: usize) -> Point {
-        //TODO add check for within bounds
+    pub fn to_point(&self, index: usize) -> Option<Point> {
         let x = (index as i32) % self.width;
         let y = (index as i32) / self.width;
-        Point::new(x, y)
+        let point = Point::new(x, y);
+        match self.contains(point) {
+            true => Some(point),
+            false => None,
+        }
     }
 }
 

@@ -6,12 +6,33 @@ use crate::util::point::*;
 pub fn run_day04(input: &str) {
     let grid = Grid::parse(input);
     let mut number_of_xmas = 0;
+    let needle = [Some(&b'M'), Some(&b'A'), Some(&b'S')];
     for spot in 0..grid.bytes.len() {
         if grid.bytes[spot] == b'X' {
-            let start = grid.to_point(spot);
-            let number_found = depth_first_search(start, true, &grid);
-            println!("{}", number_found);
-            number_of_xmas += number_found;
+            let start = grid.to_point(spot).unwrap();
+
+            for movement in DIAGONAL {
+                let first = match grid.contains(start + movement) {
+                    true => Some(grid.index(start + movement)),
+                    false => None,
+                };
+                let second = match grid.contains(start + movement * 2) {
+                    true => Some(grid.index(start + movement * 2)),
+                    false => None,
+                };
+                let third = match grid.contains(start + movement * 3) {
+                    true => Some(grid.index(start + movement * 3)),
+                    false => None,
+                };
+
+                let haystack = [first, second, third];
+
+                // println!("{:?}, {:?}", haystack, needle);
+
+                if haystack == needle {
+                    number_of_xmas += 1;
+                }
+            }
         }
 
         // if grid.bytes[spot] == b'S' {
@@ -27,47 +48,31 @@ pub fn run_day04(input: &str) {
     println!("{}", number_of_xmas);
 }
 
-fn depth_first_search(start: Point, forward: bool, grid: &Grid<u8>) -> i32 {
-    //search XMAS forward
-    let to_find = if forward {
-        [b'M', b'A', b'S']
-    } else {
-        [b'A', b'M', b'X']
-    };
+// fn depth_first_search(start: Point, forward: bool, grid: &Grid<u8>) -> i32 {
+//     //search XMAS forward
+//     let to_find = if forward {
+//         [b'M', b'A', b'S']
+//     } else {
+//         [b'A', b'M', b'X']
+//     };
 
-    let mut found = 0;
-    for movement in DIAGONAL {
-        let mut found_next_letter: bool = false;
+//     let mut found = 0;
+//     for movement in DIAGONAL {
+//         let mut found: bool = false;
 
-        for next_letter in &to_find {
-            found_next_letter = false;
-            let next_point = start + movement;
+//         let index_movement = grid.width * movement.y + movement.x;
 
-            if grid.contains(next_point) {
-                let grid_letter = grid.index(next_point);
+//
+//         let next_letters = [];
 
-                print!("{}", *grid_letter as char);
+//         if found {
+//             println!("{:?}, {:?}", start, movement);
+//             found += 1;
+//         }
+//     }
 
-                if next_letter == grid_letter {
-                    found_next_letter = true;
-                }
-            }
-
-            println!("{}", found_next_letter);
-
-            if !found_next_letter {
-                break;
-            }
-        }
-
-        if found_next_letter {
-            println!("{:?}, {:?}", start, movement);
-            found += 1;
-        }
-    }
-
-    found
-}
+//     found
+// }
 
 pub const TESTD4E: &str = "SOOSOOS
 OAOAOAO
