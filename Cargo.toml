@@ -4,9 +4,6 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-itertools = "0.13.0"
-seq-macro = "0.3.5"
-aoc-macro = { path = "./aoc-macro" }
 
 [lints.rust]
 dead_code = "allow"
