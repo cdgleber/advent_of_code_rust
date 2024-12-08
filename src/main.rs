@@ -1,6 +1,7 @@
 use advent_of_code_rust::event2024::{self, *};
 use day05::{run_day05_p1, run_day05_p2, TESTD5};
 use day06::{run_day06_p2, TESTD6};
+use day08::{run_day08, TESTD8};
 // use day01::run_day01;
 // use day02::run_day02;
 // use day03::run_day03;
@@ -26,8 +27,11 @@ fn main() {
     // // run_day06_p2(&day_06_notes);
     // println!("{}", run_day06_p2(day_06_notes));
 
-    let day_07_notes = include_str!("../input/aoc_2024_d7.txt");
-    // run_day07_p1(TESTD7);
-    let day07 = event2024::day07::parse(&day_07_notes);
-    println!("{:?}", day07);
+    // let day_07_notes = include_str!("../input/aoc_2024_d7.txt");
+    // // run_day07_p1(TESTD7);
+    // let day07 = event2024::day07::parse(&day_07_notes);
+    // println!("{:?}", day07);
+
+    let day_08_notes = include_str!("../input/aoc_2024_d8.txt");
+    run_day08(&day_08_notes);
 }
