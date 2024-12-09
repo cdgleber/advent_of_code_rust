@@ -19,12 +19,15 @@ pub fn run_day09(input: &str) {
         }
     }
 
-    // println!("{:?}", disk);
-    // println!("{:?}", file_id);
+    let comp_disk_max_size = disk
+        .iter()
+        .filter(|b| b.is_some())
+        .count();
 
-    let mut comp_disk: VecDeque<Option<u16>> = VecDeque::with_capacity(disk.len());
+    let mut comp_disk: VecDeque<Option<u16>> = VecDeque::with_capacity(comp_disk_max_size);
     let mut disk_index = 0usize;
-    while disk_index < disk.len() {
+
+    while disk_index < comp_disk_max_size {
         match disk[disk_index] {
             Some(file_id) => {
                 comp_disk.push_back(Some(file_id));
@@ -40,27 +43,20 @@ pub fn run_day09(input: &str) {
                 comp_disk.push_back(move_file);
             }
         }
-        // print_disk(&disk);
-        // print_disk(&comp_disk);
         disk_index += 1;
     }
-
-    // println!("{:?}", comp_desk);
 
     let answer = comp_disk
         .iter()
         .enumerate()
         .map(|(i, f)| {
             let r = match f {
-                Some(file_id) => *file_id as usize * i,
+                Some(file_id) => (*file_id as usize) * i,
                 None => 0usize,
             };
-
-            // println!("{} {:?} {}", i, f, r);
             r
         })
         .sum::<usize>();
-
     println!("{}", answer);
 }
 
@@ -69,7 +65,7 @@ fn print_disk(v: &VecDeque<Option<u16>>) {
         match e {
             Some(n) => print!("{n}"),
             None => print!("."),
-        };
+        }
     }
     print!("\n");
 }
