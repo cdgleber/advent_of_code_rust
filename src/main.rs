@@ -36,5 +36,6 @@ fn main() {
     // let day_08_notes = include_str!("../input/aoc_2024_d8.txt");
     // run_day08(&day_08_notes);
 
-    run_day09(TESTD9);
+    let day_09_notes = include_str!("../input/aoc_2024_d9.txt");
+    run_day09(&day_09_notes);
 }
