@@ -23,6 +23,8 @@ pub fn run_day09(input: &str) {
     let answer = get_answer(&comp_disk);
     println!("Part 1: {}", answer);
 
+    //Changed setup to a struct rather than options.
+
     let mut disk: VecDeque<File> = VecDeque::new();
     let mut file_id = 0u16;
     for (i, byte) in input.bytes().enumerate() {
@@ -37,10 +39,7 @@ pub fn run_day09(input: &str) {
         disk.push_back(temp_file);
     }
 
-    // println!("{:?}", disk);
     let comp_disk_p2: VecDeque<File> = part_two_compression(disk);
-    // println!("{:?}", comp_disk_p2);
-    // print_diskp2(&comp_disk_p2);
     let answer = get_answer_p2(&comp_disk_p2);
     println!("Part 2: {}", answer);
 }
@@ -91,7 +90,6 @@ fn part_one_compression(mut disk: VecDeque<Option<u16>>) -> VecDeque<Option<u16>
 fn part_two_compression(disk: VecDeque<File>) -> VecDeque<File> {
     let mut comp_disk: VecDeque<File> = disk.clone();
     let mut curs = disk.len() - 1;
-    // print_diskp2(&comp_disk);
 
     while curs > 0 {
         match disk[curs].ty {
