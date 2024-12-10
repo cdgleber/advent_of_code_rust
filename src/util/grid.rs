@@ -42,6 +42,21 @@ impl<T: Copy + PartialEq> Grid<T> {
             false => None,
         }
     }
+
+    pub fn find_all(&self, needle: T) -> Option<Vec<Point>> {
+        let mut temp_vec = Vec::new();
+        for (i, byte) in self.bytes.iter().enumerate() {
+            if byte == &needle {
+                //unwrap will never panic
+                temp_vec.push(self.to_point(i).unwrap());
+            }
+        }
+        if temp_vec.len() > 0 {
+            Some(temp_vec)
+        } else {
+            None
+        }
+    }
 }
 
 impl<T: Copy> Grid<T> {
