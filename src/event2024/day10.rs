@@ -108,6 +108,7 @@ fn dfs_p2(
 ) -> u8 {
     if !visited.contains(&node) {
         if trailends.contains(node) {
+            //clear the visited set so that overlaps can occur after backtracking
             visited.clear();
         } else {
             visited.insert(node.clone());
