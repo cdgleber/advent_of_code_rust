@@ -9,6 +9,7 @@ pub mod event2024 {
     pub mod day08;
     pub mod day09;
     pub mod day10;
+    pub mod day11;
 }
 
 pub mod util {
@@ -20,6 +21,6 @@ pub mod util {
     pub mod math;
     pub mod parse;
     pub mod point;
-    pub mod thread;
     pub mod slice;
+    pub mod thread;
 }
