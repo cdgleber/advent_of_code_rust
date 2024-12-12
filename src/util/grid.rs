@@ -1,5 +1,5 @@
 use crate::util::point::*;
-use std::ops::{Index, IndexMut};
+use std::ops::{ Index, IndexMut };
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct Grid<T> {
@@ -30,7 +30,10 @@ impl<T: Copy + PartialEq> Grid<T> {
             let y = (index as i32) / self.width;
             Point::new(x, y)
         };
-        self.bytes.iter().position(|&h| h == needle).map(to_point)
+        self.bytes
+            .iter()
+            .position(|&h| h == needle)
+            .map(to_point)
     }
 
     pub fn to_point(&self, index: usize) -> Option<Point> {
@@ -70,11 +73,12 @@ impl<T: Copy> Grid<T> {
 }
 
 impl<T> Grid<T> {
-    pub fn default_copy<U: Default + Copy>(&self) -> Grid<U> {
+    #[inline]
+    pub fn same_size_with<U: Copy>(&self, value: U) -> Grid<U> {
         Grid {
             width: self.width,
             height: self.height,
-            bytes: vec![U::default(); (self.width * self.height) as usize],
+            bytes: vec![value; (self.width * self.height) as usize],
         }
     }
 
