@@ -119,5 +119,33 @@ fn apply_rules(rock_line: Vec<usize>, blink: usize) -> Vec<usize> {
     temp_rock_line
 }
 
+//reference for recursive solution
+fn count(cache: &mut HashMap<(u64, u64), u64>, stone: u64, blinks: u64) -> u64 {
+    if blinks == 1 {
+        if stone == 0 {
+            return 1;
+        }
+        let digits = stone.ilog10() + 1;
+        return if digits % 2 == 0 { 2 } else { 1 };
+    }
+    let key = (stone, blinks);
+    if let Some(&value) = cache.get(&key) {
+        return value;
+    }
+    let next = if stone == 0 {
+        count(cache, 1, blinks - 1)
+    } else {
+        let digits = stone.ilog10() + 1;
+        if digits % 2 == 0 {
+            let power = 10_u64.pow(digits / 2);
+            count(cache, stone / power, blinks - 1) + count(cache, stone % power, blinks - 1)
+        } else {
+            count(cache, stone * 2024, blinks - 1)
+        }
+    };
+    cache.insert(key, next);
+    next
+}
+
 pub const TESTD11: &str = "125 17";
 pub const TESTD11P2: &str = "0 1";
