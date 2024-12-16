@@ -1,4 +1,4 @@
-use advent_of_code_rust::event2024::{self, *};
+use advent_of_code_rust::event2024::{ self, * };
 use day12::*;
 use day13::*;
 use day14::*;
