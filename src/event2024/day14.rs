@@ -6,8 +6,66 @@ pub fn run_day14(input: &str) {
     //example, the robots are in a space which is only 11 tiles wide and 7 tiles tall.
     let bathroom_ht = 103i32;
     let bathroom_wt = 101i32;
-    let seconds = 100i32;
 
+    // let seconds = 100i32;
+    // let robots: Vec<Robot> = input
+    //     .lines()
+    //     .map(|l| {
+    //         let coords: Vec<i32> = l.iter_signed().collect();
+    //         let mut end_x = (coords[0] + coords[2] * seconds) % bathroom_wt;
+    //         if end_x < 0 {
+    //             end_x += bathroom_wt;
+    //         }
+    //         let mut end_y = (coords[1] + coords[3] * seconds) % bathroom_ht;
+    //         if end_y < 0 {
+    //             end_y += bathroom_ht;
+    //         }
+    //         let robot: Robot = Robot {
+    //             start: Point::new(coords[0], coords[1]),
+    //             velocity: Point::new(coords[2], coords[3]),
+    //             end: Point::new(end_x, end_y),
+    //         };
+    //         robot
+    //     })
+    //     .collect();
+    // // println!("{:?}", robots);
+
+    // // print_grid(bathroom_ht, bathroom_wt, &robots);
+
+    // println!("{}", calc_safety_factor(bathroom_ht, bathroom_wt, &robots)); // part one
+
+    // let mut lowest = (0i32, usize::MAX);
+    // for seconds in 1..=11000 {
+    //     let robots: Vec<Robot> = input
+    //         .lines()
+    //         .map(|l| {
+    //             let coords: Vec<i32> = l.iter_signed().collect();
+    //             let mut end_x = (coords[0] + coords[2] * seconds) % bathroom_wt;
+    //             if end_x < 0 {
+    //                 end_x += bathroom_wt;
+    //             }
+    //             let mut end_y = (coords[1] + coords[3] * seconds) % bathroom_ht;
+    //             if end_y < 0 {
+    //                 end_y += bathroom_ht;
+    //             }
+    //             let robot: Robot = Robot {
+    //                 start: Point::new(coords[0], coords[1]),
+    //                 velocity: Point::new(coords[2], coords[3]),
+    //                 end: Point::new(end_x, end_y),
+    //             };
+    //             robot
+    //         })
+    //         .collect();
+
+    //     let safety = calc_safety_factor(bathroom_ht, bathroom_wt, &robots);
+    //     if safety < lowest.1 {
+    //         lowest = (seconds, safety);
+    //     }
+    // }
+
+    // println!("{:?}", lowest); // get lowest entropy = safety score
+
+    let seconds = 6668i32;
     let robots: Vec<Robot> = input
         .lines()
         .map(|l| {
@@ -30,9 +88,9 @@ pub fn run_day14(input: &str) {
         .collect();
     // println!("{:?}", robots);
 
-    // print_grid(bathroom_ht, bathroom_wt, &robots);
+    print_grid(bathroom_ht, bathroom_wt, &robots);
 
-    println!("{}", calc_safety_factor(bathroom_ht, bathroom_wt, &robots));
+    println!("{}", calc_safety_factor(bathroom_ht, bathroom_wt, &robots)); // check part 2
 }
 
 fn print_grid(bathroom_ht: i32, bathroom_wt: i32, robots: &Vec<Robot>) {
@@ -48,7 +106,10 @@ fn print_grid(bathroom_ht: i32, bathroom_wt: i32, robots: &Vec<Robot>) {
                 continue;
             }
             let current_point = Point::new(x, y);
-            let number = robots.iter().filter(|r| r.end == current_point).count();
+            let number = robots
+                .iter()
+                .filter(|r| r.end == current_point)
+                .count();
             if number > 0 {
                 print!("{number}");
             } else {
@@ -79,7 +140,7 @@ fn calc_safety_factor(bathroom_ht: i32, bathroom_wt: i32, robots: &Vec<Robot>) -
         .filter(|r| r.end.x > mid_x && r.end.y < mid_y)
         .count();
 
-    println!("{} {} {} {}", pos_pos, neg_pos, neg_neg, pos_neg);
+    // println!("{} {} {} {}", pos_pos, neg_pos, neg_neg, pos_neg);
 
     pos_pos * neg_pos * neg_neg * pos_neg
 }
@@ -93,7 +154,8 @@ struct Robot {
 
 pub const TESTD14SM: &str = "p=0,4 v=3,-3;";
 
-pub const TESTD14: &str = "p=0,4 v=3,-3
+pub const TESTD14: &str =
+    "p=0,4 v=3,-3
 p=6,3 v=-1,-3
 p=10,3 v=-1,2
 p=2,0 v=2,-1
