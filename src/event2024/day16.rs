@@ -18,7 +18,7 @@ fn find_path(grid: &Grid<u8>, start: Point) -> Grid<usize> {
     let mut dist = grid.same_size_with(usize::MAX);
     let mut seen = grid.same_size_with(false);
     dist[start] = 0usize;
-    let mut direction = UP;
+    let direction = UP;
     let mut queue = MinHeap::new();
     let to_index = |pt: Point| (grid.width * pt.y + pt.x) as usize;
     queue.push(0, to_index(start));
