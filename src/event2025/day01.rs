@@ -32,8 +32,10 @@ pub fn solve() {
             false
         };
 
+        //only the top conditional is needed for part 1
         if reading == 0 {
             count_zeros += 1;
+            //added conditionals for part 2
         } else if over_100 && !started_at_zero {
             count_zeros += 1;
         } else if under_zero && !started_at_zero {
