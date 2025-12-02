@@ -9,7 +9,7 @@ pub fn solve() {
         let dir = line.chars().nth(0).unwrap().clone();
         let mut ticks_iter = line.iter_signed::<i32>();
         let mut ticks = ticks_iter.next().unwrap();
-        count_zeros += ticks.div_euclid(100);
+        count_zeros += ticks.div_euclid(100); //for part 2
         ticks = ticks % 100;
         let mut under_zero = false;
         reading = match dir {
