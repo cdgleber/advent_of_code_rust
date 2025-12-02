@@ -39,6 +39,10 @@ fn check_value_p2(n: usize) -> bool {
     let half_point = n_str.len() / 2;
     let mut return_bool = false;
     for chuck_size in 1..=half_point {
+        if n_str.len() % chuck_size != 0 {
+            //remove iterations that cannot match
+            continue;
+        }
         let needle: String = n_str.chars().take(chuck_size).collect();
         let all_match = n_str
             .chars()
