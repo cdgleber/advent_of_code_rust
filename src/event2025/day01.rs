@@ -1,7 +1,7 @@
 use crate::util::parse::ParseOps;
 
 pub fn solve() {
-    let input = include_str!("input/day01p01.txt");
+    let input = include_str!("input/day01.txt");
     let mut reading = 50i32;
     let mut count_zeros = 0i32;
     let mut started_at_zero = false;
