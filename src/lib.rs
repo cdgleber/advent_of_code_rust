@@ -19,6 +19,7 @@ pub mod event2024 {
 pub mod event2025 {
     pub mod day01;
     pub mod day02;
+    pub mod day03;
 }
 
 pub mod util {
