@@ -1,16 +1,53 @@
 pub fn solve() {
-    TEST.lines().for_each(|l| {
-        println!("{}", find_joltage(l.as_bytes()));
-    });
+    // let input = include_str!("input/day03.txt");
+    // let mut total = 0usize;
+    // TEST.lines().for_each(|l| {
+    //     total += find_joltage_p1(l.as_bytes());
+    // });
+    // println!("{}", total);
+    println!("{}", convert_to_usize("987654321111".as_bytes()))
 }
 
-fn find_joltage(s: &[u8]) -> usize {
+fn convert_to_usize(s: &[u8]) -> usize {
+    assert!(s.len() == 12);
+    let mut mul = 100_000_000_000usize;
+    let mut product = 0usize;
+    for n in s {
+        product += ((*n - b'0') as usize) * mul;
+        mul = mul / 10;
+    }
+    product
+}
+
+fn find_joltage_p1(s: &[u8]) -> usize {
     //find max bytes
-    let (max_i, max) = s.iter().enumerate().max_by_key(|(i, n)| **n).unwrap();
-    let next_max = s[max_i + 1..].iter().max().unwrap();
+    let (max_i, max) = s
+        .iter()
+        .enumerate()
+        .max_by_key(|(i, n)| **n)
+        .unwrap();
+    let right_max: Option<u8> = if max_i + 1 < s.len() {
+        Some(*s[max_i + 1..].iter().max().unwrap())
+    } else {
+        None
+    };
+    let left_max: Option<u8> = if max_i > 0 {
+        Some(*s[..max_i].iter().max().unwrap())
+    } else {
+        None
+    };
     //convert to u8
-    println!("{} {}", max, next_max);
-    let joltage = (max - b'0') as usize * 10 + (next_max - b'0') as usize;
+    // println!("{:?} {:?} {:?}", left_max, max, right_max);
+    let joltage = if left_max.is_some() && right_max.is_some() {
+        let left = ((left_max.unwrap() - b'0') as usize) * 10 + ((max - b'0') as usize);
+        let right = ((max - b'0') as usize) * 10 + ((right_max.unwrap() - b'0') as usize);
+        left.max(right)
+    } else if left_max.is_some() {
+        ((left_max.unwrap() - b'0') as usize) * 10 + ((max - b'0') as usize)
+    } else {
+        ((max - b'0') as usize) * 10 + ((right_max.unwrap() - b'0') as usize)
+    };
+
     joltage
 }
 
