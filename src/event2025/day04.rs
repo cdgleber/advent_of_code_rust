@@ -1,8 +1,8 @@
-use crate::util::{grid::Grid, point::DIAGONAL};
+use crate::util::{ grid::Grid, point::DIAGONAL };
 
 pub fn solve() {
-    let input = include_str!("input/day04.txt");
-    let mut grid = Grid::parse(input);
+    // let input = include_str!("input/day04.txt");
+    let mut grid = Grid::parse(TEST);
     let mut accessible = 0;
 
     loop {
@@ -31,7 +31,8 @@ pub fn solve() {
     println!("{}", accessible);
 }
 
-const TEST: &str = "..@@.@@@@.
+const TEST: &str =
+    "..@@.@@@@.
 @@@.@.@.@@
 @@@@@.@.@@
 @.@@@@..@.

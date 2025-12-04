@@ -1,38 +1,45 @@
-use std::collections::{BTreeSet, HashSet};
+use std::collections::{ BTreeSet, HashSet };
 
 pub fn solve() {
-    // let input = include_str!("input/day03.txt");
+    let input = include_str!("input/day03.txt");
+
+    //PART II
     // let mut total = 0usize;
     // TEST.lines().for_each(|l| {
     //     total += find_joltage_p1(l.as_bytes());
     // });
     // println!("{}", total);
 
-    let test = "234234234234278";
-    let indecies = vec![0usize, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
-    let length = test.len();
+    // PART II
+    let result = input
+        .lines()
+        .map(|bank| {
+            let mut batteries: Vec<u8> = Vec::with_capacity(12);
 
-    let n = 5;
-    let m = 3;
-    // let mut all = HashSet::new();
-    let mut g = Gen::new();
-    let mut test = 0;
-    while !g.done() {
-        let mut candidates: Vec<usize> = (0..n).collect();
-        let mut combination = BTreeSet::new();
-        for _ in 0..m {
-            let idx = g.gen(candidates.len() as usize - 1);
-            combination.insert(candidates.remove(idx as usize));
-        }
+            let mut current_index = 0;
+            for i in 0..12 {
+                let (index, first_max) = &bank
+                    .as_bytes()
+                    [current_index..bank.len() - 11 + i].iter()
+                    .enumerate()
+                    .reduce(|acc, next| {
+                        //find the earlist max
+                        if next.1 > acc.1 {
+                            next
+                        } else {
+                            acc
+                        }
+                    })
+                    .unwrap();
 
-        println!("{:?}", combination);
-        // all.insert(combination);
+                batteries.push(**first_max);
+                current_index = current_index + index + 1;
+            }
+            convert_to_usize(&batteries)
+        })
+        .sum::<usize>();
 
-        // test += 1;
-        // if test > 10 {
-        //     break;
-        // }
-    }
+    println!("{}", result);
 }
 
 fn convert_to_usize(s: &[u8]) -> usize {
@@ -48,7 +55,11 @@ fn convert_to_usize(s: &[u8]) -> usize {
 
 fn find_joltage_p1(s: &[u8]) -> usize {
     //find max bytes
-    let (max_i, max) = s.iter().enumerate().max_by_key(|(i, n)| **n).unwrap();
+    let (max_i, max) = s
+        .iter()
+        .enumerate()
+        .max_by_key(|(i, n)| **n)
+        .unwrap();
     let right_max: Option<u8> = if max_i + 1 < s.len() {
         Some(*s[max_i + 1..].iter().max().unwrap())
     } else {
@@ -72,47 +83,6 @@ fn find_joltage_p1(s: &[u8]) -> usize {
     };
 
     joltage
-}
-
-struct Gen {
-    started: bool,
-    v: Vec<(usize, usize)>,
-    p: usize,
-}
-
-impl Gen {
-    fn new() -> Gen {
-        Gen {
-            started: false,
-            v: Vec::new(),
-            p: 0,
-        }
-    }
-    fn done(&mut self) -> bool {
-        if !self.started {
-            self.started = true;
-            return false;
-        }
-
-        for i in (0..self.v.len()).rev() {
-            if self.v[i].0 < self.v[i].1 {
-                self.v[i].0 += 1;
-                self.v.truncate(i + 1);
-                self.p = 0;
-                return false;
-            }
-        }
-
-        true
-    }
-    fn gen(&mut self, bound: usize) -> usize {
-        if self.p == self.v.len() {
-            self.v.push((0, 0));
-        }
-        self.p += 1;
-        self.v[self.p - 1].1 = bound;
-        self.v[self.p - 1].0
-    }
 }
 
 const TEST: &str = "987654321111111
